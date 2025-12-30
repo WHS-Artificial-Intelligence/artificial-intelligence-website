@@ -1,0 +1,103 @@
+/* Written by: Sean Fang & Christopher Gholmieh */
+/* Client: */
+generator client {
+    /* Provider: */
+    provider = "prisma-client"
+
+    /* Output: */
+    output   = "../app/generated/prisma"
+}
+
+/* Source: */
+datasource db {
+    /* Provider: */
+    provider = "postgresql"
+}
+
+
+/* User: */
+model User {
+    /* Identifier: */
+    identifier          String @id @default(cuid())
+
+    /* Email: */
+    email               String @unique
+
+    /* Name: */
+    name                String
+
+    /* Role: */
+    role                Role @default(STUDENT)
+
+    /* Posts: */
+    posts               Post[]
+
+    /* Comments: */
+    comments            Comment[]
+
+    /* Timestamp: */
+    creation_timestamp  DateTime @default(now())
+}
+
+/* Post: */
+model Post {
+    /* Identifier: */
+    identifier          String @id @default(cuid())
+
+    /* Title: */
+    title               String
+
+    /* Author: */
+    author              User @relation(fields: [author_identifier], references: [identifier])
+
+    /* Identifier: */
+    author_identifier   String
+
+    /* Content: */
+    content             String
+
+    /* Approved: */
+    approved            Boolean @default(false)
+
+    /* Comments: */
+    comments            Comment[]
+
+    /* Timestamp: */
+    creation_timestamp  DateTime @default(now())
+}
+
+/* Comment: */
+model Comment {
+    /* Identifier: */
+    identifier          String @id @default(cuid())
+
+    /* Author: */
+    author              User @relation(fields: [author_identifier], references: [identifier])
+
+    /* Identifier: */
+    author_identifier   String
+
+    /* Post: */
+    post                Post @relation(fields: [post_identifier], references: [identifier])
+
+    /* Identifier: */
+    post_identifier     String
+
+    /* Content: */
+    content             String
+
+    /* Approved: */
+    approved            Boolean
+
+    /* Timestamp: */
+    creation_timestamp  DateTime @default(now())
+}
+
+/* Role: */
+enum Role {
+    /* Student: */
+    STUDENT
+
+    /* Teacher: */
+    TEACHER
+}
