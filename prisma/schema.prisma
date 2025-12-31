@@ -17,6 +17,9 @@ model User {
     /* Identifier: */
     identifier          String @id @default(cuid())
 
+    /* Identifier: */
+    clerk_identifier    String @unique
+
     /* Email: */
     email               String @unique
 

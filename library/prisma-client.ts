@@ -1,6 +1,9 @@
 // Written by: Christopher Gholmieh
 // Imports:
+
+// Prisma:
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 
 // Variables (Assignment):
@@ -12,6 +15,12 @@ const global_for_prisma = global as unknown as {
 // Exports:
 export const prisma = global_for_prisma.prisma ??
     new PrismaClient({
+        /* Adapter: */
+        adapter: new PrismaPg({
+            /* Connection: */
+            connectionString: process.env.DATABASE_URL
+        }),
+
         /* Log: */
         log: ["query"]
     });
