@@ -13,6 +13,16 @@ import { NextResponse } from "next/server";
 
 // POST:
 export const POST = async (request: Request) => {
+    /**
+     * This function is designed to run when our website sends a POST request.
+     *  * POST is a type of request indicating that this function will receive data
+     *  and perform an action.
+     * 
+     * This specific function creates a post in our database with the given data.
+     *  * The given data is the content and title of the post.
+     *  It will return the created post, however this might not be useful just yet.
+     */
+    
     try {
         // Variables (Assignment):
         // Identifier:
