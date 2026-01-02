@@ -13,6 +13,20 @@ import { NextResponse } from "next/server";
 
 // POST:
 export const POST = async (request: Request) => {
+    /**
+     * This function is designed to run when our website sends a POST request.
+     *  * POST is a type of request indicating that this function will receive data
+     *  and perform an action.
+     * 
+     * This specific function removes a post in our database with the given data.
+     *  * The given data is the post's unique identifier.
+     *  It will return the removed post, however this might not be useful just yet.
+     * 
+     * NOTE: If you look at the authentication, you'll see that we use the user identifier
+     * to check if they are a teacher in the database. Any authorized individual that is not
+     * a teacher should NOT have access to this route.
+     */
+
     try {
         // Variables (Assignment):
         // Identifier:
