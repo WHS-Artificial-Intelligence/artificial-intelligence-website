@@ -21,7 +21,7 @@ model User {
     clerk_identifier    String @unique
 
     /* Email: */
-    email               String @unique
+    email               String? @unique
 
     /* Name: */
     first_name          String

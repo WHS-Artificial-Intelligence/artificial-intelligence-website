@@ -1,7 +1,6 @@
 // Written by: Sean Fang & Christopher Gholmieh
 // Imports:
 
-
 // Page:
 const Page = () => {
     return (

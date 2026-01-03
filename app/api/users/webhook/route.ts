@@ -28,7 +28,7 @@ export const POST = async (request: Request) => {
 
     // Variables (Assignment):
     // Secret:
-    const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+    const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET_KEY;
 
     if (!WEBHOOK_SECRET) {
         return NextResponse.json(
@@ -79,6 +79,7 @@ export const POST = async (request: Request) => {
     // Logic:
     try {
         switch (event.type) {
+            /* Creation: */
             case "user.created": {
                 // Variables (Assignment):
                 // Information:
@@ -87,14 +88,7 @@ export const POST = async (request: Request) => {
                 // Email:
                 const primary_email = email_addresses.find(
                     email => email.id === primary_email_address_id
-                )?.email_address;
-
-                if (!primary_email) {
-                    return NextResponse.json(
-                        { error: "[!] Primary email not found!" },
-                        { status: 400 }
-                    );
-                }
+                )?.email_address ?? null;
 
                 // Logic:
                 await prisma.user.upsert({
@@ -129,12 +123,38 @@ export const POST = async (request: Request) => {
                 break;
             }
 
+            /* Update: */
+            case "user.updated": {
+                // Variables (Assignment):
+                // Information:
+                const { id: clerk_identifier, email_addresses, primary_email_address_id } = event.data;
+
+                // Email:
+                const primary_email = email_addresses.find(
+                    email => email.id === primary_email_address_id
+                )?.email_address;
+
+                if (!primary_email) {
+                    break;
+                }
+
+                // Logic:
+                await prisma.user.update({
+                    where: { clerk_identifier },
+                    data: { email: primary_email },
+                });
+
+                // Break:
+                break;
+            }
+
+            /* Deletion: */
             case "user.deleted": {
                 // Variables (Assignment):
                 // Identifier:
                 const { id: clerk_identifier } = event.data;
 
-                await prisma.user.delete({
+                await prisma.user.deleteMany({
                     /* Where: */
                     where: { clerk_identifier: clerk_identifier },
                 });
