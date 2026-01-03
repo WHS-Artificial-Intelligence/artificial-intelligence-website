@@ -17,6 +17,15 @@ import { Webhook } from "svix";
 
 // POST:
 export const POST = async (request: Request) => {
+    /**
+     * This function is designed to run when Clerk's webhook sends us a POST request.
+     *  * POST is a type of request indicating that this function will receive data
+     *  and perform an action.
+     * 
+     * This specific function creates a user in our database with the given data.
+     *  * The given data is Clerk JSON representing user information.
+     */
+
     // Variables (Assignment):
     // Secret:
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
