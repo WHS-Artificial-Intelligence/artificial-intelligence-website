@@ -60,6 +60,10 @@ model Post {
     /* Approved: */
     approved            Boolean @default(false)
 
+    /* Deletion: */
+    deleted             Boolean @default(false)
+    deleted_at          DateTime?
+
     /* Comments: */
     comments            Comment[]
 
@@ -89,6 +93,10 @@ model Comment {
 
     /* Approved: */
     approved            Boolean
+
+    /* Deletion: */
+    deleted             Boolean @default(false)
+    deleted_at          DateTime?
 
     /* Timestamp: */
     creation_timestamp  DateTime @default(now())
