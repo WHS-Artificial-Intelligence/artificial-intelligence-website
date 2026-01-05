@@ -62,13 +62,15 @@ model Post {
 
     /* Deletion: */
     deleted             Boolean @default(false)
-    deleted_at          DateTime?
 
     /* Comments: */
     comments            Comment[]
 
     /* Timestamp: */
     creation_timestamp  DateTime @default(now())
+
+    /* Timestamp: */
+    deletion_timestamp  DateTime?
 }
 
 /* Comment: */
@@ -96,10 +98,12 @@ model Comment {
 
     /* Deletion: */
     deleted             Boolean @default(false)
-    deleted_at          DateTime?
 
     /* Timestamp: */
     creation_timestamp  DateTime @default(now())
+
+    /* Timestamp: */
+    deletion_timestamp  DateTime?
 }
 
 /* Role: */

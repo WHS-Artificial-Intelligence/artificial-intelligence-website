@@ -140,8 +140,17 @@ export const POST = async (request: Request) => {
 
                 // Logic:
                 await prisma.user.update({
-                    where: { clerk_identifier },
-                    data: { email: primary_email },
+                    /* Where: */
+                    where: { 
+                        /* Identifier: */
+                        clerk_identifier: clerk_identifier
+                    },
+
+                    /* Data: */
+                    data: {
+                        /* Email: */
+                        email: primary_email
+                    },
                 });
 
                 // Break:
@@ -154,9 +163,14 @@ export const POST = async (request: Request) => {
                 // Identifier:
                 const { id: clerk_identifier } = event.data;
 
+                // Logic:
                 await prisma.user.deleteMany({
+                    /* NOTE: We use prisma.user.deleteMany because it doesn't throw an error. */
                     /* Where: */
-                    where: { clerk_identifier: clerk_identifier },
+                    where: { 
+                        /* Identifier: */
+                        clerk_identifier: clerk_identifier
+                    },
                 });
 
                 /* Break: */

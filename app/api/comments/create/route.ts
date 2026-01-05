@@ -28,7 +28,7 @@ export const POST = async (request: Request) => {
         // Identifier:
         const user_identifier: string = await require_user();
 
-        // Content & Post Identifier:
+        // Content & Identifier:
         const { content, post_identifier } = await request.json();
 
         if (!content || !post_identifier) {
@@ -40,6 +40,7 @@ export const POST = async (request: Request) => {
 
         // Comment:
         const comment = await prisma.comment.create({
+            /* Data: */
             data: {
                 /* Content: */
                 content: content,

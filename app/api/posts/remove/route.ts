@@ -34,10 +34,20 @@ export const POST = async (request: Request) => {
 
         // User:
         const user = await prisma.user.findUnique({
-            where: { identifier: user_identifier },
-            select: { role: true },
+            /* Where: */
+            where: { 
+                /* Identifier: */
+                clerk_identifier: user_identifier
+            },
+
+            /* Select: */
+            select: {
+                /* Role: */
+                role: true
+            },
         });
 
+        // Validation:
         if (user?.role !== "TEACHER") {
             return NextResponse.json(
                 { error: "[!] Forbidden!" },
@@ -57,10 +67,19 @@ export const POST = async (request: Request) => {
 
         // Deletion:
         const deleted_post = await prisma.post.update({
-            where: { identifier: post_identifier },
+            /* Where: */
+            where: {
+                /* Identifier: */
+                identifier: post_identifier
+            },
+
+            /* Data: */
             data: {
+                /* Deleted: */
                 deleted: true,
-                deleted_at: new Date(),
+
+                /* Timestamp: */
+                deletion_timestamp: new Date()
             },
         })
 

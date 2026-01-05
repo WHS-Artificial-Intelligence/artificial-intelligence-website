@@ -25,6 +25,8 @@ export const POST = async (request: Request) => {
         // Variables (Assignment):
         // Identifier:
         const user_identifier: string = await require_user();
+
+        // Identifier:
         const { comment_identifier } = await request.json();
 
         if (!comment_identifier) {
@@ -36,22 +38,41 @@ export const POST = async (request: Request) => {
 
         // Comment:
         const comment = await prisma.comment.findUnique({
+            /* Where: */
             where: { identifier: comment_identifier },
+
+            /* Select: */
             select: {
+                /* Identifier: */
                 author_identifier: true,
+
+                /* Deleted: */
                 deleted: true,
             },
         });
 
         // User:
         const user = await prisma.user.findUnique({
-            where: { identifier: user_identifier },
-            select: { role: true },
+            /* Where: */
+            where: { 
+                /* Identifier: */
+                clerk_identifier: user_identifier
+            },
+
+            /* Select: */
+            select: { 
+                /* Role: */
+                role: true 
+            },
         });
 
-        const is_author = comment.author_identifier === user_identifier;
+        // Author:
+        const is_author = comment?.author_identifier === user_identifier;
+
+        // Teacher:
         const is_teacher = user?.role === "TEACHER";
 
+        // Validation:
         if (!is_author && !is_teacher) {
             return NextResponse.json(
                 { error: "[!] Forbidden!" },
@@ -61,10 +82,18 @@ export const POST = async (request: Request) => {
 
         // Deletion:
         const deleted_comment = await prisma.comment.update({
-            where: { identifier: comment_identifier },
+            /* Where: */
+            where: { 
+                /* Identifier: */
+                identifier: comment_identifier 
+            },
+
             data: {
+                /* Deleted: */
                 deleted: true,
-                deleted_at: new Date(),
+
+                /* Timestamp: */
+                deletion_timestamp: new Date(),
             },
         });
 
