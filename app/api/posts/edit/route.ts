@@ -13,6 +13,14 @@ import { NextResponse } from "next/server";
 
 // POST:
 export const POST = async (request: Request) => {
+    /**
+     * This function is designed to run when our website sends a POST request.
+     *  * POST is a type of request indicating that this function will receive data
+     *  and perform an action.
+     * NOTE: Whenever a student action invokes this route, the post will require re-approval.
+     *  * In constrast, whenever a teacher makes an edit, the post will still be approved.
+     */
+
     try {
         // Variables (Assignment):
         // Identifier:
@@ -74,7 +82,7 @@ export const POST = async (request: Request) => {
 
         if (!post) {
             return NextResponse.json(
-                { error: "[!] Post is not found in database! " },
+                { error: "[!] Post is not found in database!" },
                 { status: 404 }
             );
         }
@@ -104,7 +112,10 @@ export const POST = async (request: Request) => {
             /* Data: */
             data: {
                 /* Content: */
-                content: content
+                content: content,
+
+                /* Approved: */
+                approved: is_teacher ? true : false,
             }
         });
 

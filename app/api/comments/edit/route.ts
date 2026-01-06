@@ -13,6 +13,14 @@ import { NextResponse } from "next/server";
 
 // POST:
 export const POST = async (request: Request) => {
+    /**
+     * This function is designed to run when our website sends a POST request.
+     *  * POST is a type of request indicating that this function will receive data
+     *  and perform an action.
+     * NOTE: Whenever a student action invokes this route, the comment will require re-approval.
+     *  * In constrast, whenever a teacher makes an edit, the comment will still be approved.
+     */
+
     try {
         // Variables (Assignment):
         // Identifier:
@@ -43,9 +51,9 @@ export const POST = async (request: Request) => {
         // Identifier:
         const { comment_identifier, content } = await request.json();
 
-        if (!comment_identifier || !content ) {
+        if (!comment_identifier || !content) {
             return NextResponse.json(
-                { error: "[!] Comment identifier or content missing from payload! "},
+                { error: "[!] Comment identifier or content missing from payload! " },
                 { status: 400 }
             );
         }
@@ -74,7 +82,7 @@ export const POST = async (request: Request) => {
 
         if (!comment) {
             return NextResponse.json(
-                { error: "[!] Comment is not found in database! "},
+                { error: "[!] Comment is not found in database!" },
                 { status: 404 }
             );
         }
@@ -104,7 +112,10 @@ export const POST = async (request: Request) => {
             /* Data: */
             data: {
                 /* Content: */
-                content: content
+                content: content,
+
+                /* Approved: */
+                approved: is_teacher ? true : false,
             }
         });
 
@@ -114,6 +125,6 @@ export const POST = async (request: Request) => {
         return NextResponse.json(
             { error: "[!] Internal server error!" },
             { status: 500 }
-        );       
+        );
     }
 }
