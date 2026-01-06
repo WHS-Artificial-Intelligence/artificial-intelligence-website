@@ -67,10 +67,10 @@ export const POST = async (request: Request) => {
         });
 
         // Author:
-        const is_author = comment?.author_identifier === user_identifier;
+        const is_author: boolean = comment?.author_identifier === user_identifier;
 
         // Teacher:
-        const is_teacher = user?.role === "TEACHER";
+        const is_teacher: boolean = user?.role === "TEACHER";
 
         // Validation:
         if (!is_author && !is_teacher) {
