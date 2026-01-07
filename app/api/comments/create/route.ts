@@ -40,7 +40,6 @@ export const POST = async (request: Request) => {
 
         // Comment:
         const comment = await prisma.comment.create({
-            /* Data: */
             data: {
                 /* Content: */
                 content: content,
