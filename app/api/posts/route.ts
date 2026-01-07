@@ -30,7 +30,7 @@ export const GET = async (request: Request) => {
         await require_user();
 
         // Posts:
-        const posts = 
+        const posts = await query_posts();
 
         // Response:
         return NextResponse.json(posts, { status: 200 });
