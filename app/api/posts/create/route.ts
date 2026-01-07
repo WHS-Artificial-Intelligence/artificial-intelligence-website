@@ -4,8 +4,8 @@
 // Authentication:
 import { require_user } from "@/library/authentication-helper";
 
-// Prisma:
-import { prisma } from "@/library/prisma-client";
+// Database:
+import { create_post } from "@/library/database-helper";
 
 // Next:
 import { NextResponse } from "next/server";
@@ -39,24 +39,22 @@ export const POST = async (request: Request) => {
         }
 
         // Post:
-        const post = await prisma.post.create({
-            data: {
-                /* Title: */
-                title: title,
+        const created_post = await create_post({
+            /* Title: */
+            title: title,
 
-                /* Content: */
-                content: content,
+            /* Content: */
+            content: content,
 
-                /* Identifier: */
-                author_identifier: user_identifier,
+            /* Identifier: */
+            author_identifier: user_identifier,
 
-                /* Approved: */
-                approved: false
-            }
-        });
+            /* Approved: */
+            approved: false
+        })
 
         // Response:
-        return NextResponse.json(post, { status: 201 });
+        return NextResponse.json(created_post, { status: 201 });
     } catch {
         return NextResponse.json(
             { error: "[!] Unauthorized" },

@@ -4,8 +4,8 @@
 // Authentication:
 import { require_user } from "@/library/authentication-helper";
 
-// Prisma:
-import { prisma } from "@/library/prisma-client";
+// Database:
+import { create_comment } from "@/library/database-helper";
 
 // Next:
 import { NextResponse } from "next/server";
@@ -39,20 +39,18 @@ export const POST = async (request: Request) => {
         }
 
         // Comment:
-        const comment = await prisma.comment.create({
-            data: {
+        const comment = await create_comment({
                 /* Content: */
-                content: content,
+            content: content,
 
-                /* Identifier: */
-                author_identifier: user_identifier,
+            /* Identifier: */
+            author_identifier: user_identifier,
 
-                /* Post Identifier: */
-                post_identifier: post_identifier,
+            /* Post Identifier: */
+            post_identifier: post_identifier,
 
-                /* Approved: */
-                approved: false
-            }
+            /* Approved: */
+            approved: false           
         });
 
         // Response:

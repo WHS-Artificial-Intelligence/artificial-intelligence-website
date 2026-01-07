@@ -4,6 +4,9 @@
 // Authentication:
 import { require_user } from "@/library/authentication-helper";
 
+// Database:
+import { remove_post } from "@/library/database-helper";
+
 // Prisma:
 import { prisma } from "@/library/prisma-client";
 
@@ -66,22 +69,7 @@ export const POST = async (request: Request) => {
         }
 
         // Deletion:
-        const deleted_post = await prisma.post.update({
-            /* Where: */
-            where: {
-                /* Identifier: */
-                identifier: post_identifier
-            },
-
-            /* Data: */
-            data: {
-                /* Deleted: */
-                deleted: true,
-
-                /* Timestamp: */
-                deletion_timestamp: new Date()
-            },
-        })
+        const deleted_post = await remove_post(post_identifier);
 
         // Response:
         return NextResponse.json(deleted_post, { status: 200 });

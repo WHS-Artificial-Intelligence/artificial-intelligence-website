@@ -48,6 +48,62 @@ export type user_t = {
 
 
 // Functions:
+export const remove_comment = async (comment_identifier: string) => {
+    return await prisma.comment.update({
+        /* Where: */
+        where: { 
+            /* Identifier: */
+            identifier: comment_identifier 
+        },
+
+        data: {
+            /* Deleted: */
+            deleted: true,
+
+            /* Timestamp: */
+            deletion_timestamp: new Date(),
+        },
+    })
+}
+
+export const query_comments = async (post_identifier: string) => {
+    return await prisma.comment.findMany({
+        /* Where: */
+        where: {
+            /* Identifier: */
+            post_identifier: post_identifier,
+
+            /* Approved: */
+            approved: true,
+
+            /* Deleted: */
+            deleted: false,
+        },
+
+        /* Select: */
+        select: {
+            /* Content: */
+            content: true,
+
+            /* Author: */
+            author: {
+                /* Select: */
+                select: {
+                    /* Email: */
+                    email: true,
+
+                    /* Name: */
+                    first_name: true,
+                    last_name: true
+                },
+            },
+        },
+
+        /* Take: */
+        take: 15
+    });
+}
+
 export const create_comment = async (comment_data: comment_t) => {
     return await prisma.comment.create({
         data: {
@@ -63,6 +119,56 @@ export const create_comment = async (comment_data: comment_t) => {
             /* Approved: */
             approved: comment_data.approved
         }
+    });
+}
+
+export const remove_post = async (post_identifier: string) => {
+    return await prisma.post.update({
+        /* Where: */
+        where: {
+            /* Identifier: */
+            identifier: post_identifier
+        },
+
+        /* Data: */
+        data: {
+            /* Deleted: */
+            deleted: true,
+
+            /* Timestamp: */
+            deletion_timestamp: new Date()
+        },
+    });
+}
+
+export const query_posts = async () => {
+    return await prisma.post.findMany({
+        /* Select: */
+        select: {
+        /* Author: */
+            author: true,
+
+            /* Content: */
+            content: true,
+
+            /* Comments: */
+            comments: true,
+        },
+
+        /* Order: */
+        orderBy: {
+            /* Timestamp: */
+            creation_timestamp: "desc",
+        },
+
+        /* Where: */
+        where: {
+            /* Approved: */
+            approved: true,
+        },
+
+        /* Take: */
+        take: 15,
     });
 }
 

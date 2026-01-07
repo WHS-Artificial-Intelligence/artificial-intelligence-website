@@ -4,8 +4,8 @@
 // Authentication:
 import { require_user } from "@/library/authentication-helper";
 
-// Prisma:
-import { prisma } from "@/library/prisma-client";
+// Database:
+import { query_posts } from "@/library/database-helper";
 
 // Next:
 import { NextResponse } from "next/server";
@@ -30,34 +30,7 @@ export const GET = async (request: Request) => {
         await require_user();
 
         // Posts:
-        const posts = await prisma.post.findMany({
-            /* Select: */
-            select: {
-                /* Author: */
-                author: true,
-
-                /* Content: */
-                content: true,
-
-                /* Comments: */
-                comments: true,
-            },
-
-            /* Order: */
-            orderBy: {
-                /* Timestamp: */
-                creation_timestamp: "desc",
-            },
-
-            /* Where: */
-            where: {
-                /* Approved: */
-                approved: true,
-            },
-
-            /* Take: */
-            take: 15,
-        })
+        const posts = 
 
         // Response:
         return NextResponse.json(posts, { status: 200 });

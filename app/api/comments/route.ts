@@ -1,6 +1,9 @@
 // Written by: Christopher Gholmieh
 // Imports:
 
+// Database:
+import { query_comments } from "@/library/database-helper";
+
 // Prisma:
 import { prisma } from "@/library/prisma-client"
 
@@ -56,41 +59,7 @@ export const GET = async (request: Request) => {
         };
 
         // Comments:
-        const comments = await prisma.comment.findMany({
-            /* Where: */
-            where: {
-                /* Identifier: */
-                post_identifier: post_identifier,
-
-                /* Approved: */
-                approved: true,
-
-                /* Deleted: */
-                deleted: false,
-            },
-
-            /* Select: */
-            select: {
-                /* Content: */
-                content: true,
-
-                /* Author: */
-                author: {
-                    /* Select: */
-                    select: {
-                        /* Email: */
-                        email: true,
-
-                        /* Name: */
-                        first_name: true,
-                        last_name: true
-                    },
-                },
-            },
-
-            /* Take: */
-            take: 15
-        });
+        const comments = await query_comments(post_identifier);
 
         // Response:
         return NextResponse.json(comments, {

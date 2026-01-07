@@ -4,6 +4,9 @@
 // Authentication:
 import { require_user } from "@/library/authentication-helper";
 
+// Database:
+import { remove_comment } from "@/library/database-helper";
+
 // Prisma:
 import { prisma } from "@/library/prisma-client";
 
@@ -80,25 +83,11 @@ export const POST = async (request: Request) => {
             );
         }
 
-        // Deletion:
-        const deleted_comment = await prisma.comment.update({
-            /* Where: */
-            where: { 
-                /* Identifier: */
-                identifier: comment_identifier 
-            },
-
-            data: {
-                /* Deleted: */
-                deleted: true,
-
-                /* Timestamp: */
-                deletion_timestamp: new Date(),
-            },
-        });
+        // Removal:
+        const removed_comment = await remove_comment(comment_identifier);
 
         // Response:
-        return NextResponse.json(deleted_comment, { status: 200 });
+        return NextResponse.json(removed_comment, { status: 200 });
     } catch {
         return NextResponse.json(
             { error: "[!] Unauthorized" },
