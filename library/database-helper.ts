@@ -34,6 +34,18 @@ export type post_t = {
     approved: boolean
 }
 
+export type user_t = {
+    /* Identifier: */
+    clerk_identifier: string,
+
+    /* Email: */
+    email: string,
+
+    /* Name: */
+    first_name: string | undefined,
+    last_name:  string | undefined,
+}
+
 
 // Functions:
 export const create_comment = async (comment_data: comment_t) => {
@@ -69,5 +81,35 @@ export const create_post = async (post_data: post_t) => {
             /* Approved: */
             approved: false
         }
+    });
+}
+
+export const create_user = async (user_data: user_t) => {
+    return await prisma.user.upsert({
+        /* Where: */
+        where: { clerk_identifier: user_data.clerk_identifier },
+
+        /* Update: */
+        update: {
+            /* Email: */
+            email: user_data.email,
+
+            /* Name: */
+            first_name: user_data.first_name ?? "",
+            last_name: user_data.last_name ?? "",
+        },
+
+        /* Create: */
+        create: {
+            /* Identifier: */
+            clerk_identifier: user_data.clerk_identifier,
+
+            /* Email: */
+            email: user_data.email,
+
+            /* Name: */
+            first_name: user_data.first_name ?? "",
+            last_name: user_data.last_name ?? "",
+        },
     });
 }
