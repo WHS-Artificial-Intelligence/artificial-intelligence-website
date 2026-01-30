@@ -1,7 +1,14 @@
-const config = {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  },
+// Written by: Christopher Gholmieh
+// Configuration:
+const configuration = {
+    /* Plugins: */
+    plugins: {
+        /* PostCSS: */
+        "@tailwindcss/postcss": {},
+
+        /* Typography: */
+        "@tailwindcss/typography": {},
+    },
 };
 
-export default config;
+export default configuration;

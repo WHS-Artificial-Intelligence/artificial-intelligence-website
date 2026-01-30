@@ -145,7 +145,7 @@ export const query_posts = async () => {
     return await prisma.post.findMany({
         /* Select: */
         select: {
-        /* Author: */
+            /* Author: */
             author: true,
 
             /* Content: */
@@ -169,6 +169,37 @@ export const query_posts = async () => {
 
         /* Take: */
         take: 15,
+    });
+}
+
+export const query_post = async (post_identifier: string) => {
+     return await prisma.post.findUnique({
+        /* Select: */
+        select: {
+            /* Author: */
+            author: true,
+
+            /* Content: */
+            content: true,
+
+            /* Comments: */
+            comments: true,
+        },
+
+        /* Order: */
+        orderBy: {
+            /* Timestamp: */
+            creation_timestamp: "desc",
+        },
+
+        /* Where: */
+        where: {
+            /* Identifier: */
+            identifier: post_identifier,
+
+            /* Approved: */
+            approved: true,
+        },
     });
 }
 
