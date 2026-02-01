@@ -22,6 +22,6 @@ export default define_configuration({
     /* Source: */
     datasource: {
         /* URL: */
-        url: process.env["DATABASE_URL"],
+        url: process.env["DATABASE_URL"] as string,
     },
 });

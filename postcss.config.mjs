@@ -5,10 +5,8 @@ const configuration = {
     plugins: {
         /* PostCSS: */
         "@tailwindcss/postcss": {},
-
-        /* Typography: */
-        "@tailwindcss/typography": {},
     },
 };
 
+// Exports:
 export default configuration;

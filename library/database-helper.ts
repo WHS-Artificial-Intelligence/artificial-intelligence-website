@@ -173,7 +173,16 @@ export const query_posts = async () => {
 }
 
 export const query_post = async (post_identifier: string) => {
-     return await prisma.post.findUnique({
+     return await prisma.post.findFirst({
+        /* Where: */
+        where: {
+            /* Identifier: */
+            identifier: post_identifier,
+
+            /* Approved: */
+            approved: true,
+        },
+
         /* Select: */
         select: {
             /* Author: */
@@ -184,21 +193,6 @@ export const query_post = async (post_identifier: string) => {
 
             /* Comments: */
             comments: true,
-        },
-
-        /* Order: */
-        orderBy: {
-            /* Timestamp: */
-            creation_timestamp: "desc",
-        },
-
-        /* Where: */
-        where: {
-            /* Identifier: */
-            identifier: post_identifier,
-
-            /* Approved: */
-            approved: true,
         },
     });
 }

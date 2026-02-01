@@ -4,35 +4,25 @@
 // Markdown:
 import ReactMarkdown from "react-markdown";
 
+// Prisma:
+import { query_post } from "@/library/database-helper";
+
 // GFM:
 import remarkGfm from "remark-gfm";
 
 
-const Page = async ({ parameters }: {
-    parameters: { post_identifier: string }
+const Page = async ({ params }: {
+    params: { slug: string }
 }) => {
     // Variables (Assignment):
-    // Response:
-    const response = await fetch("http://localhost:3000/api/posts/information", {
-        /* Method: */
-        method: "POST",
+    // Post:
+    const post = await query_post(params.slug)
 
-        /* Headers: */
-        headers: { "Content-Type": "application/json" },
-
-        /* Body: */
-        body: JSON.stringify({ post_identifier: parameters.post_identifier }),
-    });
-
-    // Information:
-    const information = await response.json();
-
-    
     // Post:
     return (
         <article className="prose prose-neutral max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {information.content}
+                {post.content}
             </ReactMarkdown>
         </article>
     );
